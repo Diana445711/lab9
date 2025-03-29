@@ -40,8 +40,8 @@ button:hover{
 }
 
 form{
-  display: flex;
-  flex-direction: column;
+  /*display: flex;
+  flex-direction: column;*/
   padding: 12px;
   width: auto;
 }
@@ -57,7 +57,7 @@ form input{
   background-color: #007bff;
   color: white;
   border-radius: 4px;
-  padding: 12px, 24px, 12px, 24px;
+  padding: 12px 24px;
   width: 100%;
 }
 
@@ -69,10 +69,11 @@ form label {
   margin-bottom: 12px;
 }
 
-select {
+select, input {
   width: 100%;
   padding: 8px;
   border: 1px solid lightgray;
   border-radius: 4px;
   margin-bottom: 12px;
+  box-sizing: border-box;
 }
