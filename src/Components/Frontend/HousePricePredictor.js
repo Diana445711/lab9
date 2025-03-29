@@ -1,5 +1,4 @@
-import React, { useState } from 'react'; 
-
+import React, { useState } from 'react';
 
 function HouseForm() { 
   const [City, setCity] = useState(''); 
@@ -13,14 +12,11 @@ function HouseForm() {
   const [SquareFeet, setSquareFeet] = useState(''); 
   const [Furnishing, setFurnishing] = useState(''); 
   const [Smoking, setSmoking] = useState(''); 
-  const [Pets, setPets] = useState(false); // default to unchecked 
+  const [Pets, setPets] = useState(false); 
   const [prediction, setPrediction] = useState(null);
 
   const handleSubmit = (e) => { 
     e.preventDefault(); 
-
-    console.log({ City, Province, Latitude, Longitude, LeaseTerm, Type, Beds, Baths, SquareFeet, Furnishing, Smoking, Pets}); 
-  
     const houseData = {
       city: City,
       province: Province,
@@ -45,179 +41,140 @@ function HouseForm() {
       .then((data) => setPrediction(data.predicted_price))
       .catch((err) => console.error(err));
   };
-  
 
   return ( 
     <div className='wrapper'>
-    <div className="box">
+      <div className="box">
         <div className="items">
-    <form onSubmit={handleSubmit}> 
-        <h1>House Price Predictor</h1>
-      <label> 
-        City: 
-        <input 
-          type="text" 
-          value={City} 
-          onChange={(e) => setCity(e.target.value)} 
-          required 
-        /> 
-      </label> 
+          <form onSubmit={handleSubmit}> 
+            <h1>House Price Predictor</h1>
+            
+            {/* City */}
+            <label>City:</label>
+            <input 
+              type="text" 
+              value={City} 
+              onChange={(e) => setCity(e.target.value)} 
+              required 
+            />
 
-      <br /> 
+            {/* Province */}
+            <label>Province:</label>
+            <input 
+              type="text" 
+              value={Province} 
+              onChange={(e) => setProvince(e.target.value)} 
+              required 
+            />
 
-      <label> 
-        Province: 
-        <input 
-          type="text" 
-          value={Province} 
-          onChange={(e) => setProvince(e.target.value)} 
-          required 
-        /> 
-      </label> 
+            {/* Latitude */}
+            <label>Latitude:</label>
+            <input 
+              type="text" 
+              value={Latitude} 
+              onChange={(e) => setLatitude(e.target.value)} 
+              required 
+            />
 
-      <br /> 
+            {/* Longitude */}
+            <label>Longitude:</label>
+            <input 
+              type="text" 
+              value={Longitude} 
+              onChange={(e) => setLongitude(e.target.value)} 
+              required 
+            />
 
-      <label> 
-        Latitude: 
-        <input 
-          type="text" 
-          value={Latitude} 
-          onChange={(e) => setLatitude(e.target.value)} 
-          required 
-        /> 
-      </label> 
+            {/* Lease Term */}
+            <label>Lease Term:</label>
+            <input 
+              type="text" 
+              value={LeaseTerm} 
+              onChange={(e) => setLeaseTerm(e.target.value)} 
+              required 
+            />
 
-      <br /> 
+            {/* Type */}
+            <label>Type:</label>
+            <input 
+              type="text" 
+              value={Type} 
+              onChange={(e) => setType(e.target.value)} 
+              required 
+            />
 
-      <label> 
-        Longitude: 
-        <input 
-          type="text" 
-          value={Longitude} 
-          onChange={(e) => setLongitude(e.target.value)} 
-          required 
-        /> 
-      </label> 
+            {/* Beds */}
+            <label>Beds:</label>
+            <input 
+              type="text" 
+              value={Beds} 
+              onChange={(e) => setBeds(e.target.value)} 
+              required 
+            />
 
-      <br /> 
+            {/* Baths */}
+            <label>Baths:</label>
+            <input 
+              type="text" 
+              value={Baths} 
+              onChange={(e) => setBaths(e.target.value)} 
+              required 
+            />
 
-      <label> 
-        Lease Term: 
-        <input 
-          type="text" 
-          value={LeaseTerm} 
-          onChange={(e) => setLeaseTerm(e.target.value)} 
-          required 
-        /> 
-      </label> 
+            {/* Square Feet */}
+            <label>Square Feet:</label>
+            <input 
+              type="text" 
+              value={SquareFeet} 
+              onChange={(e) => setSquareFeet(e.target.value)} 
+              required 
+            />
 
-      <br /> 
+            {/* Furnishing Dropdown */}
+            <label>Furnishing:</label>
+            <select 
+              value={Furnishing} 
+              onChange={(e) => setFurnishing(e.target.value)} 
+              required
+            >
+              <option value=""></option>
+              <option value="Fully Furnished">Fully Furnished</option>
+              <option value="Partially Furnished">Partially Furnished</option>
+              <option value="Unfurnished">Unfurnished</option>
+            </select>
 
-      <label> 
-        Type: 
-        <input 
-          type="text" 
-          value={Type} 
-          onChange={(e) => setType(e.target.value)} 
-          required 
-        /> 
-      </label> 
+            {/* Smoking Dropdown */}
+            <label>Smoking:</label>
+            <input 
+              type="text" 
+              value={Smoking} 
+              onChange={(e) => setSmoking(e.target.value)} 
+              required 
+            />
 
-      <br /> 
+            {/* Pets Checkbox */}
+            <label>
+              I have a pet
+              <input 
+                type="checkbox" 
+                checked={Pets} 
+                onChange={(e) => setPets(e.target.checked)} 
+              /> 
+              
+            </label>
 
-      <label> 
-        Beds: 
-        <input 
-          type="text" 
-          value={Beds} 
-          onChange={(e) => setBeds(e.target.value)} 
-          required 
-        /> 
-      </label> 
+            <button type="submit">Predict</button>
 
-      <br /> 
-
-      <label> 
-        Baths: 
-        <input 
-          type="text" 
-          value={Baths} 
-          onChange={(e) => setBaths(e.target.value)} 
-          required 
-        /> 
-      </label> 
-
-      <br /> 
-
-
-       <label> 
-        Square Feet: 
-        <input 
-          type="text" 
-          value={SquareFeet} 
-          onChange={(e) => setSquareFeet(e.target.value)} 
-          required 
-        /> 
-      </label> 
-
-
-      <label>
-        Furnishing:
-        <br />
-        <select value={Furnishing} onChange={(e) => setFurnishing(e.target.value)} required>
-            <option value=""></option>
-            <option value="Fully Furnished"> Fully Furnished</option>
-            <option value="Partially furnished">Partially Furnished</option>
-            <option value="Unfurnished">Unfurnished</option>
-        </select>
-      </label>
-      <br />
-      <br />
-      
-
-      <label> 
-        Smoking: 
-        <input 
-          type="text" 
-          value={Smoking} 
-          onChange={(e) => setSmoking(e.target.value)} 
-          required 
-        /> 
-      </label> 
-
-      <label> 
-        I have a pet: 
-        <input 
-          type="checkbox" 
-          checked={Pets} 
-          onChange={(e) => setPets(e.target.checked)} 
-        /> 
-      </label>
-
-      <br /> 
-
-      <br /> 
-      <br /> 
-      <button type="submit">Predict</button> 
-
-      {prediction !== null && (
-        <div style={{
-          marginTop: '16px',
-          backgroundColor: '#DFF0D8',
-          border: '1px solid #3C763D',
-          padding: '12px',
-          borderRadius: '4px',
-          fontWeight: 'bold'
-        }}>
-          Predicted Rent: ${prediction.toFixed(2)}
+            {prediction !== null && (
+              <div className="prediction-result">
+                Predicted Rent: ${prediction.toFixed(2)}
+              </div>
+            )}
+          </form> 
         </div>
-      )}
-    </form> 
+      </div>
     </div>
-</div>
-</div>
   ); 
-
 } 
 
-export default HouseForm; 
+export default HouseForm;

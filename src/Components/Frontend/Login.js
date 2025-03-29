@@ -1,54 +1,61 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../App.css';
 
 function AuthenticationForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    function handleAuthentication() {
-        fetch('http://127.0.0.1:5000/authenticate', {
+    const navigate = useNavigate();
+
+    const handleAuthentication = (e) => {
+        e.preventDefault();
+        fetch('http://127.0.0.1:5000/validate_login', {
             method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({'username':username, 'password':password}),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
+        .then((response) => {
+            if (!response.ok) throw new Error('Login failed');
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                navigate('/predict'); 
             } else {
-                throw new Error('Authentication failed');
+                setMessage(data.message || 'Invalid credentials');
             }
-            })
-        .then(data => setMessage(data.message))
-        .catch(error => setMessage('Authentication failed. Incorrect username or password.'));};
+        })
+        .catch(() => setMessage('Login failed. Check credentials.'));
+    };
 
-        
-        
-
-        return (
-            <div class="wrapper">
-            <div className= "format">
-                
-                <h1><b> Login </b></h1>
-                <label className= "child">
-                    <b>Username:</b>
-                </label>
-                <input type="text" onChange={(e) => setUsername(e.target.value)} required/>
-                <br />
-                <label className="child">
-                    <b>Password:</b>
-                </label>
-                <input type="password"  onChange={(e) => setPassword(e.target.value)}  required/>
-                <br />
-                <button onClick={handleAuthentication}>Login</button>
-                <br />
-                
-               {message && <p style={{color:'red', marginTop: '10px'}}>{message}</p>}
+    return (
+        <div className="wrapper">
+            <div className="format">
+                <form onSubmit={handleAuthentication}>
+                    <h1><b>Login</b></h1>
+                    <div className="child">
+                        <label><b>Username:</b></label>
+                        <input 
+                            type="text" 
+                            onChange={(e) => setUsername(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <div className="child">
+                        <label><b>Password:</b></label>
+                        <input 
+                            type="password" 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <button type="submit">Login</button>
+                    {message && <p style={{ color: 'red', marginTop: '10px' }}>{message}</p>}
+                </form>
             </div>
-            </div>
-            );
-            };
+        </div>
+    );
+}
 
 export default AuthenticationForm;
-            
