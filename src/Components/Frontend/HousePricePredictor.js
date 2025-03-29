@@ -1,10 +1,11 @@
 import React, { useState } from 'react'; 
 
+
 function HouseForm() { 
   const [City, setCity] = useState(''); 
   const [Province, setProvince] = useState(''); 
   const [Latitude, setLatitude] = useState(''); 
-  const [Longtitude, setLongtitude] = useState(''); 
+  const [Longitude, setLongitude] = useState(''); 
   const [LeaseTerm, setLeaseTerm] = useState(''); 
   const [Type, setType] = useState(''); 
   const [Beds, setBeds] = useState(''); 
@@ -13,11 +14,38 @@ function HouseForm() {
   const [Furnishing, setFurnishing] = useState(''); 
   const [Smoking, setSmoking] = useState(''); 
   const [Pets, setPets] = useState(false); // default to unchecked 
+  const [prediction, setPrediction] = useState(null);
 
   const handleSubmit = (e) => { 
     e.preventDefault(); 
-    console.log({ City, Province, Latitude, Longtitude, LeaseTerm, Type, Beds, Baths, SquareFeet, Furnishing, Smoking, Pets}); 
-  }; 
+
+    console.log({ City, Province, Latitude, Longitude, LeaseTerm, Type, Beds, Baths, SquareFeet, Furnishing, Smoking, Pets}); 
+  
+    const houseData = {
+      city: City,
+      province: Province,
+      latitude: parseFloat(Latitude),
+      longitude: parseFloat(Longitude),
+      lease_term: LeaseTerm,
+      type: Type,
+      beds: parseInt(Beds),
+      baths: parseFloat(Baths),
+      sq_feet: parseFloat(SquareFeet),
+      furnishing: Furnishing,
+      smoking: Smoking,
+      pets: Pets
+    };
+
+    fetch('http://127.0.0.1:5000/predict_house_price', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(houseData),
+    })
+      .then((res) => res.json())
+      .then((data) => setPrediction(data.predicted_price))
+      .catch((err) => console.error(err));
+  };
+  
 
   return ( 
     <div className='wrapper'>
@@ -62,11 +90,11 @@ function HouseForm() {
       <br /> 
 
       <label> 
-        Longtitude: 
+        Longitude: 
         <input 
           type="text" 
-          value={Longtitude} 
-          onChange={(e) => setLongtitude(e.target.value)} 
+          value={Longitude} 
+          onChange={(e) => setLongitude(e.target.value)} 
           required 
         /> 
       </label> 
@@ -100,7 +128,7 @@ function HouseForm() {
       <label> 
         Beds: 
         <input 
-          type="number" 
+          type="text" 
           value={Beds} 
           onChange={(e) => setBeds(e.target.value)} 
           required 
@@ -136,7 +164,8 @@ function HouseForm() {
       <label>
         Furnishing:
         <br />
-        <select value={Furnishing} onChange={(e) => setFurnishing(e.target.value)}>
+        <select value={Furnishing} onChange={(e) => setFurnishing(e.target.value)} required>
+            <option value=""></option>
             <option value="Fully Furnished"> Fully Furnished</option>
             <option value="Partially furnished">Partially Furnished</option>
             <option value="Unfurnished">Unfurnished</option>
@@ -169,7 +198,20 @@ function HouseForm() {
 
       <br /> 
       <br /> 
-      <button type="submit">Submit</button> 
+      <button type="submit">Predict</button> 
+
+      {prediction !== null && (
+        <div style={{
+          marginTop: '16px',
+          backgroundColor: '#DFF0D8',
+          border: '1px solid #3C763D',
+          padding: '12px',
+          borderRadius: '4px',
+          fontWeight: 'bold'
+        }}>
+          Predicted Rent: ${prediction.toFixed(2)}
+        </div>
+      )}
     </form> 
     </div>
 </div>

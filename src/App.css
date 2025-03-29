@@ -64,3 +64,15 @@ form input{
 .form button:hover{
   background-color: darkblue;
 }
+
+form label {
+  margin-bottom: 12px;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
